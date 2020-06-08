@@ -1,0 +1,3 @@
+id,name,model_id/id,perm_create,perm_read,perm_write,perm_unlink
+access_account_printing,account_printing,model_account_printing,account.group_account_user,1,1,1,1
+access_account_printing_line,account_printing_line,model_account_printing_line,account.group_account_user,1,1,1,1

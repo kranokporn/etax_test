@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="account_printing_line_facturx_export">
+        <t xmlns:rsm="urn:etda:uncefact:data:standard:Invoice_CrossIndustryInvoice:2"
+           xmlns:ram="urn:etda:uncefact:data:standard:Invoice_ReusableAggregateBusinessInformationEntity:2">
+            <ram:IncludedSupplyChainTradeLineItem>
+                <!-- Line number. -->
+                <ram:AssociatedDocumentLineDocument>
+                    <ram:LineID t-esc="line_counter"/>
+                </ram:AssociatedDocumentLineDocument>
+
+                <!-- Product. -->
+                <ram:SpecifiedTradeProduct>
+                    <ram:ID
+                        t-if="line.product_id and line.product_id.default_code"
+                        t-esc="line.product_id.default_code"/>
+                    <ram:Name
+                        t-if="line.product_id"
+                        t-esc="line.product_id.name"/>
+                    <ram:Description t-esc="line.name"/>
+                </ram:SpecifiedTradeProduct>
+
+                <!-- Amounts. -->
+                <ram:SpecifiedLineTradeAgreement>
+                    <t t-set="taxes"
+                       t-value="line.tax_ids.compute_all(
+                            line.price_unit,
+                            currency=line.currency_id,
+                            quantity=line.quantity,
+                            product=line.product_id,
+                            partner=record.partner_id,
+                            is_refund=line.move_id.type in ('in_refund', 'out_refund'))"/>
+                    <ram:GrossPriceProductTradePrice>
+                        <ram:ChargeAmount
+                            t-att-currencyID="currency"
+                            t-esc="format_monetary(taxes['total_excluded'], currency)"/>
+
+                        <!-- Discount. -->
+                        <ram:AppliedTradeAllowanceCharge t-if="line.discount">
+                            <ram:ChargeIndicator t-esc="'false' if line.discount == 1 else 'true'"/>
+                            <ram:ActualAmount t-esc="(line.discount/100) * line.price_unit"/>
+                        </ram:AppliedTradeAllowanceCharge>
+                    </ram:GrossPriceProductTradePrice>
+                </ram:SpecifiedLineTradeAgreement>
+
+                <!-- Quantity. -->
+                <ram:SpecifiedLineTradeDelivery>
+                    <ram:BilledQuantity
+                        t-esc="line.quantity"/>
+                </ram:SpecifiedLineTradeDelivery>
+                <ram:SpecifiedLineTradeSettlement>
+                    <!-- <ram:ApplicableTradeTax>
+                        <t t-if="'sale' in line.tax_line_id.type_tax_use">
+                            <ram:TypeCode>VAT</ram:TypeCode>
+                            <ram:CalculatedRate
+                                t-if="line.tax_line_id.amount_type == 'percent'"
+                                t-esc="line.tax_line_id.amount"/>
+                        </t>
+                        <ram:BasisAmount
+                            t-att-currencyID="currency"
+                            t-esc="format_monetary(line.tax_base_amount, currency)"/>
+                        <ram:CalculatedAmount
+                            t-att-currencyID="currency"
+                            t-esc="format_monetary(line.price_unit, currency)"/>
+                    </ram:ApplicableTradeTax> -->
+                    <!-- Subtotal. -->
+                    <!-- <ram:SpecifiedTradeSettlementLineMonetarySummation>
+                        <ram:LineTotalAmount
+                            t-att-currencyID="currency"
+                            t-esc="format_monetary(line.price_subtotal, currency)"/>
+                    </ram:SpecifiedTradeSettlementLineMonetarySummation> -->
+                </ram:SpecifiedLineTradeSettlement>
+
+            </ram:IncludedSupplyChainTradeLineItem>
+        </t>
+    </template>
+
+    <template id="account_printing_partner_facturx_export">
+        <t xmlns:rsm="urn:etda:uncefact:data:standard:Invoice_CrossIndustryInvoice:2"
+           xmlns:ram="urn:etda:uncefact:data:standard:Invoice_ReusableAggregateBusinessInformationEntity:2">
+           <!-- Contact.
+           <ram:DefinedTradeContact>
+               <ram:PersonName t-esc="partner.name"/>
+               <ram:EmailURIUniversalCommunication t-if="partner.email">
+                   <ram:URIID t-esc="partner.email"/>
+               </ram:EmailURIUniversalCommunication>
+               <ram:TelephoneUniversalCommunication t-if="partner.phone or partner.mobile">
+                   <ram:CompleteNumber t-esc="partner.phone or partner.mobile"/>
+               </ram:TelephoneUniversalCommunication>
+           </ram:DefinedTradeContact>
+
+           Address.
+           <ram:PostalTradeAddress>
+               <ram:PostcodeCode t-if="partner.zip" t-esc="partner.zip"/>
+               <ram:LineOne t-if="partner.street" t-esc="partner.street"/>
+               <ram:LineTwo t-if="partner.street2" t-esc="partner.street2"/>
+               <ram:CityName t-if="partner.city" t-esc="partner.city"/>
+               <ram:CountryID t-if="partner.country_id" t-esc="partner.country_id.code"/>
+               <ram:CountrySubDivisionID t-if="partner.state_id" t-esc="partner.state_id.name"/>
+           </ram:PostalTradeAddress> -->
+           <!-- Contact. -->
+           <ram:DefinedTradeContact>
+               <ram:PersonName t-esc="name"/>
+               <ram:EmailURIUniversalCommunication t-if="email">
+                   <ram:URIID t-esc="email"/>
+               </ram:EmailURIUniversalCommunication>
+               <ram:TelephoneUniversalCommunication t-if="phone">
+                   <ram:CompleteNumber t-esc="phone"/>
+               </ram:TelephoneUniversalCommunication>
+           </ram:DefinedTradeContact>
+
+           <!-- Address. -->
+           <ram:PostalTradeAddress>
+               <ram:PostcodeCode t-if="zip" t-esc="zip"/>
+               <ram:LineOne t-if="street" t-esc="street"/>
+               <ram:LineTwo t-if="street2" t-esc="street2"/>
+               <ram:CityName t-if="city" t-esc="city"/>
+               <ram:CountryID t-if="country_code" t-esc="country_code"/>
+               <ram:CountrySubDivisionID>10</ram:CountrySubDivisionID>
+               <!-- <ram:CountrySubDivisionID t-if="state" t-esc="state"/> -->
+           </ram:PostalTradeAddress>
+        </t>
+    </template>
+
+    <template id="account_printing_facturx_export">
+        <t t-set="currency" t-value="record.currency"/>
+        <rsm:Invoice_CrossIndustryInvoice xmlns:rsm="urn:etda:uncefact:data:standard:Invoice_CrossIndustryInvoice:2" xmlns:ram="urn:etda:uncefact:data:standard:Invoice_ReusableAggregateBusinessInformationEntity:2">
+            <rsm:ExchangedDocumentContext>
+                <ram:GuidelineSpecifiedDocumentContextParameter>
+                    <ram:ID schemeAgencyID="ETDA" schemeVersionID="v2.0">ER3-2560</ram:ID>
+                </ram:GuidelineSpecifiedDocumentContextParameter>
+            </rsm:ExchangedDocumentContext>
+            <rsm:ExchangedDocument>
+                <ram:ID t-esc="record.number"/>
+                <ram:Name>ใบแจ้งหนี้</ram:Name>
+                <ram:TypeCode>380</ram:TypeCode>
+                <ram:IssueDateTime t-esc="format_date(record.date_document)"></ram:IssueDateTime>
+                <!-- <ram:Purpose>-</ram:Purpose> -->
+                <ram:IncludedNote t-if="record.notes">
+                    <ram:Content t-esc="record.notes"/>
+                </ram:IncludedNote>
+            </rsm:ExchangedDocument>
+            <rsm:SupplyChainTradeTransaction>
+                <ram:ApplicableHeaderTradeAgreement>
+                    <!-- Seller. -->
+                    <ram:SellerTradeParty>
+                        <ram:Name t-esc="record.customer_name"/>
+                        <ram:SpecifiedTaxRegistration t-if="record.customer_vat">
+                            <ram:ID schemeID="TXID" t-esc="record.customer_vat + '00000'"/>
+                        </ram:SpecifiedTaxRegistration>
+                        <!-- <ram:Name t-esc="record.company_id.partner_id.name"/> -->
+                        <!-- <ram:SpecifiedTaxRegistration t-if="record.company_id.vat">
+                            <ram:ID schemeID="TXID" t-esc="record.company_id.vat + '00000'"/>
+                        </ram:SpecifiedTaxRegistration> -->
+                        <!-- Address. -->
+                        <t t-call="docsign_template_form.account_printing_partner_facturx_export">
+                            <!-- <t t-set="partner" t-value="record.company_id.partner_id"/> -->
+                            <t t-set="partner" t-value=""/>
+                            <t t-set="name" t-value="record.customer_name"/>
+                            <t t-set="email" t-value="record.customer_email"/>
+                            <t t-set="phone" t-value="record.customer_phone"/>
+                            <t t-set="zip" t-value="record.customer_zip"/>
+                            <t t-set="street" t-value="record.customer_street"/>
+                            <t t-set="street2" t-value="record.customer_street2"/>
+                            <t t-set="city" t-value="record.customer_city"/>
+                            <t t-set="country_code" t-value="record.customer_country_code"/>
+                        </t>
+                    </ram:SellerTradeParty>
+
+                    <!-- Customer. -->
+                    <ram:BuyerTradeParty>
+                        <ram:Name t-esc="record.customer_name"/>
+                        <ram:SpecifiedTaxRegistration t-if="record.customer_vat">
+                            <!-- <ram:ID schemeID="TXID" t-esc="partner.vat + '00000'"/> -->
+                            <ram:ID schemeID="OTHR">N/A</ram:ID>
+                        </ram:SpecifiedTaxRegistration>
+                        <!-- Address. -->
+                        <t t-call="docsign_template_form.account_printing_partner_facturx_export">
+                            <t t-set="partner" t-value=""/>
+                            <t t-set="name" t-value="record.customer_name"/>
+                            <t t-set="email" t-value="record.customer_email"/>
+                            <t t-set="phone" t-value="record.customer_phone"/>
+                            <t t-set="zip" t-value="record.customer_zip"/>
+                            <t t-set="street" t-value="record.customer_street"/>
+                            <t t-set="street2" t-value="record.customer_street2"/>
+                            <t t-set="city" t-value="record.customer_city"/>
+                            <t t-set="country_code" t-value="record.customer_country_code"/>
+                        </t>
+                    </ram:BuyerTradeParty>
+
+                    <!-- <ram:BuyerOrderReferencedDocument>
+                        <ram:IssuerAssignedID>OR111/18</ram:IssuerAssignedID>
+                        <ram:IssueDateTime>2016-11-22T18:35:27</ram:IssueDateTime>
+                        <ram:ReferenceTypeCode>LC</ram:ReferenceTypeCode>
+                    </ram:BuyerOrderReferencedDocument> -->
+                    <ram:AdditionalReferencedDocument>
+                        <ram:IssuerAssignedID>17/00217</ram:IssuerAssignedID>
+                        <ram:IssueDateTime>2016-11-22T18:35:27</ram:IssueDateTime>
+                        <ram:ReferenceTypeCode>T03</ram:ReferenceTypeCode>
+                    </ram:AdditionalReferencedDocument>
+                </ram:ApplicableHeaderTradeAgreement>
+                <!-- Delivery. Don't make a dependency with sale only for one field. -->
+                <ram:ApplicableHeaderTradeDelivery>
+                    <!-- <ram:ShipToTradeParty
+                        t-if="'partner_shipping_id' in record._fields and record.partner_shipping_id">
+                        <ram:Name t-esc="record.partner_shipping_id"/>
+                        <t t-call="docsign_template_form.account_printing_partner_facturx_export">
+                            <t t-set="partner" t-value="record.partner_shipping_id"/>
+                        </t>
+                    </ram:ShipToTradeParty> -->
+                </ram:ApplicableHeaderTradeDelivery>
+
+                <!-- <ram:ApplicableHeaderTradeDelivery>
+                    <ram:ActualDeliverySupplyChainEvent>
+                        <ram:OccurrenceDateTime>2016-11-30T10:30:00</ram:OccurrenceDateTime>
+                    </ram:ActualDeliverySupplyChainEvent>
+                </ram:ApplicableHeaderTradeDelivery> -->
+                <ram:ApplicableHeaderTradeSettlement>
+                    <ram:InvoiceCurrencyCode t-esc="currency"/>
+                    <!-- Tax Summary. -->
+                    <!-- <t t-foreach="record.line_ids.filtered(lambda line: line.tax_line_id)" t-as="tax_line">
+                        <ram:ApplicableTradeTax>
+                            <t t-if="'sale' in tax_line.tax_line_id.type_tax_use">
+                                <ram:TypeCode>VAT</ram:TypeCode>
+                                <ram:CalculatedRate
+                                    t-if="tax_line.tax_line_id.amount_type == 'percent'"
+                                    t-esc="tax_line.tax_line_id.amount"/>
+                            </t>
+                            <ram:BasisAmount
+                                t-att-currencyID="currency"
+                                t-esc="format_monetary(tax_line.tax_base_amount, currency)"/>
+                            <ram:CalculatedAmount
+                                t-att-currencyID="currency"
+                                t-esc="format_monetary(tax_line.price_unit, currency)"/>
+                        </ram:ApplicableTradeTax>
+                    </t> -->
+                    <!-- Summary. -->
+                    <!-- <ram:SpecifiedTradeSettlementHeaderMonetarySummation>
+                        <ram:LineTotalAmount
+                            t-att-currencyID="currency"
+                            t-esc="format_monetary(record.amount_untaxed, currency)"/>
+                        <ram:TaxBasisTotalAmount
+                            t-att-currencyID="currency"
+                            t-esc="format_monetary(sum(record.line_ids.filtered(lambda line: line.tax_line_id).mapped('price_unit')), currency)"/>
+                        <ram:TaxTotalAmount
+                            t-att-currencyID="currency"
+                            t-esc="format_monetary(record.amount_tax, currency)"/>
+                        <ram:GrandTotalAmount
+                            t-att-currencyID="currency"
+                            t-esc="format_monetary(record.amount_total, currency)"/>
+                    </ram:SpecifiedTradeSettlementHeaderMonetarySummation> -->
+                </ram:ApplicableHeaderTradeSettlement>
+
+                <!-- Invoice lines. -->
+                <!-- <t t-set="line_counter" t-value="0"/>
+                <t t-foreach="record.invoice_line_ids.filtered(lambda l: not l.display_type)" t-as="line">
+                    <t t-set="line_counter" t-value="line_counter + 1"/>
+                    <t t-call="docsign_template_form.account_printing_line_facturx_export"/>
+                </t> -->
+                <ram:IncludedSupplyChainTradeLineItem>
+                    <ram:AssociatedDocumentLineDocument>
+                        <ram:LineID>1</ram:LineID>
+                    </ram:AssociatedDocumentLineDocument>
+                    <ram:SpecifiedTradeProduct>
+                        <ram:ID>JBL-LSP495</ram:ID>
+                        <ram:Name>bluetoothJBL</ram:Name>
+                        <ram:Description>25watt</ram:Description>
+                        <ram:IndividualTradeProductInstance>
+                            <ram:BatchID>17/013</ram:BatchID>
+                        </ram:IndividualTradeProductInstance>
+                        <ram:DesignatedProductClassification>
+                            <ram:ClassCode>LSP</ram:ClassCode>
+                            <ram:ClassName>dddd</ram:ClassName>
+                        </ram:DesignatedProductClassification>
+                        <ram:OriginTradeCountry>
+                            <ram:ID>JP</ram:ID>
+                        </ram:OriginTradeCountry>
+                        <ram:InformationNote>
+                            <ram:Subject>ProductRemark</ram:Subject>
+                            <ram:Content>L_REM</ram:Content>
+                        </ram:InformationNote>
+                        <ram:InformationNote>
+                            <ram:Subject>LineAllowanceChargeInd</ram:Subject>
+                            <ram:Content>-</ram:Content>
+                        </ram:InformationNote>
+                        <ram:InformationNote>
+                            <ram:Subject>LineAllowanceActualAmount</ram:Subject>
+                            <ram:Content>-</ram:Content>
+                        </ram:InformationNote>
+                        <ram:InformationNote>
+                            <ram:Subject>LineAllowanceReasonCode</ram:Subject>
+                            <ram:Content>-</ram:Content>
+                        </ram:InformationNote>
+                        <ram:InformationNote>
+                            <ram:Subject>LineAllowanceReason</ram:Subject>
+                            <ram:Content>-</ram:Content>
+                        </ram:InformationNote>
+                    </ram:SpecifiedTradeProduct>
+                    <ram:SpecifiedLineTradeAgreement>
+                        <ram:GrossPriceProductTradePrice>
+                            <ram:ChargeAmount currencyID="THB">2140.00</ram:ChargeAmount>
+                        </ram:GrossPriceProductTradePrice>
+                    </ram:SpecifiedLineTradeAgreement>
+                    <ram:SpecifiedLineTradeDelivery>
+                        <ram:BilledQuantity unitCode="-">1.00</ram:BilledQuantity>
+                        <ram:PerPackageUnitQuantity>1</ram:PerPackageUnitQuantity>
+                    </ram:SpecifiedLineTradeDelivery>
+                    <ram:SpecifiedLineTradeSettlement>
+                        <ram:ApplicableTradeTax>
+                            <ram:TypeCode>VAT</ram:TypeCode>
+                            <ram:CalculatedRate>7.00</ram:CalculatedRate>
+                            <ram:BasisAmount currencyID="THB">1990.20</ram:BasisAmount>
+                            <ram:CalculatedAmount currencyID="THB">149.80</ram:CalculatedAmount>
+                        </ram:ApplicableTradeTax>
+                        <ram:SpecifiedTradeSettlementLineMonetarySummation>
+                            <ram:TaxTotalAmount currencyID="THB">149.80</ram:TaxTotalAmount>
+                            <ram:NetLineTotalAmount currencyID="THB">1990.20</ram:NetLineTotalAmount>
+                            <ram:NetIncludingTaxesLineTotalAmount currencyID="THB">2140.00</ram:NetIncludingTaxesLineTotalAmount>
+                        </ram:SpecifiedTradeSettlementLineMonetarySummation>
+                    </ram:SpecifiedLineTradeSettlement>
+                </ram:IncludedSupplyChainTradeLineItem>
+            </rsm:SupplyChainTradeTransaction>
+        </rsm:Invoice_CrossIndustryInvoice>
+    </template>
+</odoo>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- SellerTaxId -->
+    <record id="webservice_sellertaxid" model="ir.config_parameter" forcecreate="True">
+        <field name="key">webservice.sellertaxid</field>
+        <field name="value">0105554048641</field>
+    </record>
+    <!-- SellerBranchId -->
+    <record id="webservice_sellerbranchid" model="ir.config_parameter" forcecreate="True">
+        <field name="key">webservice.sellerbranchid</field>
+        <field name="value">00000</field>
+    </record>
+    <!-- ServiceCode -->
+    <record id="webservice_servicecode" model="ir.config_parameter" forcecreate="True">
+        <field name="key">webservice.servicecode</field>
+        <field name="value">S04</field>
+    </record>
+    <!-- APIKey -->
+    <record id="webservice_api" model="ir.config_parameter" forcecreate="True">
+        <field name="key">webservice.api</field>
+        <field name="value">AK2-3UY8R84Q6LIZ5A18IDZH6JI3O63IZLJLJH01CS1OUHRTWR5VG4AED7UCTA5HKE92JJLN1R1DZT74WCDN9PI4L4JM7B62ULRNQTHJ4EO85IYUELWWVG5R7EX8AHQNQY8YNW21Y8Q5EE46P0GQUEOFY700LLOCIBOLRXG0ZVY3J9IUWQOTYBB9TJ85DKSIU8E93MIF8NQ89HRYGGNI4U7K69DZQ9H0EGG0YC2Z09O90J77COR0HCQK9W9SALBWE3E6I</field>
+    </record>
+    <!-- UserCode -->
+    <record id="webservice_usercode" model="ir.config_parameter" forcecreate="True">
+        <field name="key">webservice.usercode</field>
+        <field name="value">kittiu</field>
+    </record>
+    <!-- AccessKey -->
+    <record id="webservice_accesskey" model="ir.config_parameter" forcecreate="True">
+        <field name="key">webservice.accesskey</field>
+        <field name="value">P@ssw0rd</field>
+    </record>
+    <!-- URL -->
+    <record id="webservice_url" model="ir.config_parameter" forcecreate="True">
+        <field name="key">webservice.url</field>
+        <field name="value">https://uatetaxsp.one.th/etaxdocumentws/etaxsigndocument</field>
+    </record>
+</odoo>

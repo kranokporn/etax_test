@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- PDF File -->
+    <report
+        id="account_printing_pdf"
+        model="account.printing"
+        string="Invoices (.pdf)"
+        report_type="qweb-pdf"
+        name="docsign_template_form.report_printing_pdf"
+        file="docsign_template_form.report_printing_pdf"
+    />
+
+    <!-- TEXT File -->
+    <report
+        id="account_printing_text"
+        model="account.printing"
+        string="Invoices (.txt)"
+        report_type="qweb-text"
+        name="docsign_template_form.report_printing_text"
+        file="docsign_template_form.report_printing_text"
+    />
+</odoo>

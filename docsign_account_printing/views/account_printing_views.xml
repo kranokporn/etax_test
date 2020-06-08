@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="view_printing_search" model="ir.ui.view">
+        <field name="name">account.printing.search</field>
+        <field name="model">account.printing</field>
+        <field eval="3" name="priority"/>
+        <field name="arch" type="xml">
+            <search string="Printing">
+                <field name="number"/>
+                <field name="customer_name"/>
+                <field name="user_sign"/>
+                <filter string="Waiting" name="draft" domain="[('state', '=', 'draft')]" help="Document not sign yet"/>
+                <filter string="Signed" name="signed" domain="[('state', '=', 'signed')]" help="Document signed already."/>
+                <filter string="Cancel" name="cancel" domain="[('state', '=', 'cancel')]" help="Document is cancel"/>
+                <group expand="0" string="Group By">
+                    <filter string="State" name="state" domain="[]"  context="{'group_by': 'state'}"/>
+                    <filter string="Customer" name="customer" domain="[]"  context="{'group_by': 'customer_name'}"/>
+                    <filter string="Currency" name="currency" domain="[]"  context="{'group_by': 'currency'}"/>
+                    <filter string="Operating Unit" name="operating_unit" domain="[]"  context="{'group_by': 'operating_unit'}"/>
+                    <filter string="Users" name="user_sign" domain="[]"  context="{'group_by': 'user_sign'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_printing_tree" model="ir.ui.view">
+        <field name="name">account.printing.tree</field>
+        <field name="model">account.printing</field>
+        <field name="arch" type="xml">
+            <tree decoration-info="state == 'draft'" string="Printing" decoration-muted="state == 'cancel'">
+                <field name="number"/>
+                <field name="customer_name"/>
+                <field name="date_document"/>
+                <field name="currency"/>
+                <field name="user_sign"/>
+                <field name="system_origin_name"/>
+                <field name="system_origin_number"/>
+                <field name="operating_unit"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_account_printing_line_tree" model="ir.ui.view">
+        <field name="name">account.printing.line.tree</field>
+        <field name="model">account.printing.line</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="printing_id" invisible="1"/>
+                <field name="product_name" />
+                <field name="name" />
+                <field name="activity_group_name" />
+                <field name="quantity" />
+                <field name="uom" />
+                <field name="price_unit" />
+                <field name="taxes" />
+                <field name="price_subtotal" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_printing_form" model="ir.ui.view">
+        <field name="name">account.printing.form</field>
+        <field name="model">account.printing</field>
+        <field name="arch" type="xml">
+            <form string="Account Printing">
+                <header>
+                    <button name="action_cancel" string="Cancel" type="object" states="draft,signed"/>
+                    <button name="action_set_to_draft" string="Set to Draft" type="object" states="cancel"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,signed,cancel" />
+                </header>
+                <sheet>
+                    <div>
+                        <!-- Number -->
+                        <h1 class="mt0">
+                            <field name="number" readonly="True"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="customer_name"/>
+                            <field name="seller_name"/>
+                            <field name="origin_id"/>
+                        </group>
+                        <group>
+                            <field name="date_document"/>
+                            <field name="operating_unit"/>
+                            <field name="currency"/>
+                            <field name="purpose_name"/>
+                            <field name="purpose_reason_other"/>
+                        </group>
+                    </group>
+                    <notebook colspan="4">
+                        <page string="Printing Lines">
+                            <field name="printing_lines" ref="view_account_printing_line_tree"/>
+                            <!-- Totals -->
+                            <group class="oe_subtotal_footer">
+                                <field name="amount_untaxed"/>
+                                <field name="amount_tax"/>
+                                <field name="amount_total" class="oe_subtotal_footer_separator"/>
+                            </group>
+                            <group>
+                                <field name="notes"/>
+                            </group>
+                        </page>
+                        <page string="Customer Information">
+                            <group id="customer_information">
+                                <group id="customer_information_left">
+                                    <field name="customer_street" string="Street"/>
+                                    <field name="customer_street2" string="Street2"/>
+                                    <field name="customer_city" string="City"/>
+                                    <field name="customer_state" string="State"/>
+                                    <field name="customer_zip" string="Zip"/>
+                                    <field name="customer_country_code" string="Country Code"/>
+                                </group>
+                                <group id="customer_information_right">
+                                    <field name="customer_vat" string="Tax ID"/>
+                                    <field name="customer_phone" string="Phone"/>
+                                    <field name="customer_email" string="Email"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Seller Information">
+                            <group id="seller_information">
+                                <group id="seller_information_left">
+                                    <field name="seller_street" string="Street"/>
+                                    <field name="seller_street2" string="Street2"/>
+                                    <field name="seller_city" string="City"/>
+                                    <field name="seller_state" string="State"/>
+                                    <field name="seller_zip" string="Zip"/>
+                                    <field name="seller_country_code" string="Country Code"/>
+                                </group>
+                                <group id="seller_information_right">
+                                    <field name="seller_vat" string="Tax ID"/>
+                                    <field name="seller_phone" string="Phone"/>
+                                    <field name="seller_email" string="Email"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Tax Branch Information">
+                            <group id="taxbranch_information">
+                                <group id="taxbranch_left">
+                                    <field name="taxbranch_name"/>
+                                    <field name="taxbranch_code"/>
+                                    <field name="taxbranch_taxid"/>
+                                </group>
+                                <group id="taxbranch_right">
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Origin">
+                            <group id="origin_system">
+                                <group id="origin_left">
+                                    <field name="system_origin_name"/>
+                                    <field name="system_origin_number"/>
+                                </group>
+                                <group id="origin_right">
+                                    <field name="user_sign"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+</odoo>
