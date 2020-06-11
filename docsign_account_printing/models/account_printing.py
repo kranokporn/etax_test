@@ -39,8 +39,7 @@ class AccountPrinting(models.Model):
 
     number = fields.Char(default="/", required=True)
     company_id = fields.Many2one(
-        comodel_name='res.company', string='Company',
-        default=lambda self: self.env.company.id, ondelete='cascade')
+        comodel_name='res.company', string='Company', default=lambda self: self.env.company.id, ondelete='cascade')
     # header
     customer_name = fields.Char(string="Customer")
     date_document = fields.Datetime()
@@ -186,6 +185,7 @@ class AccountPrintingLines(models.Model):
         comodel_name="account.printing",
         ondelete="cascade",
     )
+
     product_name = fields.Char(string="Product")
     name = fields.Text(string="Description")
     activity_group_name = fields.Char(string="Activity Group")
