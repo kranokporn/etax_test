@@ -11,11 +11,13 @@
     "website": "http://ecosoft.co.th",
     "depends": ["web", "docsign_account_printing"],
     "data": [
+        "data/paper_format.xml",
+        "data/account_reports.xml",
         "templates/report_templates.xml",
         "templates/crossindustryinvoice.xml",
         "templates/printing_pdf.xml",
         "templates/printing_text.xml",
-        "data/account_reports.xml",
+
     ],
     "installable": True,
     "maintainers": ["Saran440"],

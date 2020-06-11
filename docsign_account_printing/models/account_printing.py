@@ -186,6 +186,7 @@ class AccountPrintingLines(models.Model):
         comodel_name="account.printing",
         ondelete="cascade",
     )
+
     product_name = fields.Char(string="Product")
     name = fields.Text(string="Description")
     activity_group_name = fields.Char(string="Activity Group")
