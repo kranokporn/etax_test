@@ -7,113 +7,136 @@
     </template>
 
     <template id="external_layout_pabi">
-        <!-- <link rel="stylesheet" href="fonts/thsarabunnew.css"> -->
-            <div t-attf-class="header" t-attf-style="font-family: {{o.company_id.font}}">
-                <div class="row">
-                    <div class="col-7 text-left" style="margin-top:22px;">
-                        <b>สำนักงานพัฒนาวิทยาศาสตร์และเทคโนโลยีแห่งชาติ</b><br/>
-                        <b>National Science and Technology Development Agency</b><br/>
-                        <b style="font-weight: 100;">73/1 ถนนพระรามที่ 6 ทุ่งพญาไท ราชเทวี กรุงเทพฯ 10400</b><br/>
-                        <b style="font-weight: 100;">73/1 Rama VI Rd,. Thungphayathai, Rajdhevee, Bangkok 10400</b><br/>
-                        <b style="font-weight: 100;">Tel.</b> <t t-esc="o.seller_phone"/> <b style="font-weight: 100;">Fax.</b><br/>
-                        <div class="row">
-                            <div class="col-3">
-                                <b>สาขาที่</b>
-                            </div>
-                            <div class="col-9">
-                                <t t-esc="o.taxbranch_code"/> <t t-esc="o.taxbranch_name"/><br/>
-                            </div>
+        <div t-attf-class="header o_report_etax_header" t-attf-style="font-family: {{o.company_id.font}}">
+            <div class="row">
+                <div class="col-7 text-left" style="margin-top:22px;">
+                    <b>สำนักงานพัฒนาวิทยาศาสตร์และเทคโนโลยีแห่งชาติ</b><br/>
+                    <b>National Science and Technology Development Agency</b><br/>
+                    <div style="font-weight: 100;">
+                        <b>73/1 ถนนพระรามที่ 6 ทุ่งพญาไท ราชเทวี กรุงเทพฯ 10400</b><br/>
+                        <b>73/1 Rama VI Rd,. Thungphayathai, Rajdhevee, Bangkok 10400</b><br/>
+                        <b>Tel.</b> <t t-esc="o.seller_phone"/> <b>Fax.</b><br/><br/>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <b>สาขาที่</b>
                         </div>
-                        <div class="row">
-                            <div class="col-3">
-                                <b>Branch No.</b>
-                            </div>
-                            <div class="col-9">
-                                <t t-esc="o.seller_street"/> <t t-esc="o.seller_street2"/> <t t-esc="o.seller_city"/> <t t-esc="o.seller_state"/> <t t-esc="o.seller_zip"/> <t t-esc="o.seller_country_code"/> โทรศัพท์ <t t-esc="o.seller_phone"/><br/>
-                            </div>
-                        </div>
-                        <b>เลขประจำตัวผู้เสียภาษี/TAX ID</b> <t t-esc="o.taxbranch_taxid"/><br/>
-                        <div class="row">
-                            <div class="col-3">
-                                <b>ลูกค้า</b>
-                            </div>
-                            <div class="9">
-                                <t t-esc="o.customer_name"/><br/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-3">
-                                <b>Customer</b>
-                            </div>
-                            <div class="col-9">
-                                <t t-esc="o.customer_street"/> <t t-esc="o.customer_street2"/>
-                                <t t-esc="o.customer_city"/> <t t-esc="o.customer_state"/> <t t-esc="o.customer_zip"/> <t t-esc="o.customer_country_code"/><br/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-2">
-                                <b>ผู้ติดต่อ</b>
-                            </div>
+                        <div class="col-9">
+                            <t t-esc="o.taxbranch_code"/> <t t-esc="o.taxbranch_name"/><br/>
                         </div>
                     </div>
-                    <div class="col-5">
-                        <div class="text-right">
-                            <img t-if="o.company_id.logo_web" t-att-src="image_data_uri(o.company_id.logo_web)" style="max-height: 60px;" alt="Logo"/><br/><br/><br/>
+                    <div class="row">
+                        <div class="col-3">
+                            <b>Branch No.</b>
                         </div>
-                        <div class="text-left">
-                            <b style="font-size:18pt">ใบเสร็จรับเงิน / ใบกำกับภาษี</b><br/>
-                            <b style="font-size:18pt">RECEIPT / TAX INVOICE</b><br/>
-                            <div class="row">
-                                <div class="col-5">
-                                    <b>เลขที่/No.</b>
-                                </div>
-                                <div class="col-7">
-                                    <t t-esc="o.number"/><br/>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">
-                                    <b>วันที่/date</b>
-                                </div>
-                                <div class="col-7">
-                                    <t t-esc="o.date_document"/><br/>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">
-                                    <b>อ้างอิง/Ref No.</b><br/>
-                                </div>
-                                <!-- <div class="col-9">
-                                    <t t-esc="o.date_document"/><br/>
-                                </div> -->
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <b>เลขประจำตัวผู้เสียภาษี/Tax ID</b>
-                                </div>
-                                <div class="col-6">
-                                    <t t-esc="o.customer_vat"/><br/>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-7">
-                                    <b>สาขาที่/Branch No</b>
-                                </div>
-                                <div class="col-5">
-                                    <t t-set="สำนักงานใหญ่" t-value="00000"/> <t t-esc="สำนักงานใหญ่"/>
-                                </div>
-                            </div>
+                        <div class="col-9">
+                            <t t-esc="o.seller_street"/>
+                            <t t-esc="o.seller_street2"/>
+                            <t t-esc="o.seller_city"/>
+                            <t t-esc="o.seller_state"/>
+                            <t t-esc="o.seller_zip"/>
+                            <t t-esc="o.seller_country_code"/>
+                            โทรศัพท์ <t t-esc="o.seller_phone"/><br/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <b>เลขประจำตัวผู้เสียภาษี/TAX ID</b>
+                        </div>
+                        <div class="col-6">
+                            <t t-esc="o.taxbranch_taxid"/><br/><br/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <b>รหัสลูกค้า</b>
+                        </div>
+                        <div class="col-9">
+                            <t t-esc="o.customer_name"/><br/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <b>ลูกค้า</b>
+                        </div>
+                        <div class="col-9">
+                            <t t-esc="o.customer_name"/><br/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <b>Customer</b>
+                        </div>
+                        <div class="col-9">
+                            <t t-esc="o.customer_street"/>
+                            <t t-esc="o.customer_street2"/>
+                            <t t-esc="o.customer_city"/>
+                            <t t-esc="o.customer_state"/>
+                            <t t-esc="o.customer_zip"/>
+                            <t t-esc="o.customer_country_code"/><br/>
+                        </div>
+                    </div>
 
+                </div>
+                <div class="col-5">
+                    <div class="text-right">
+                        <img t-if="o.company_id.logo_web" t-att-src="image_data_uri(o.company_id.logo_web)" style="max-height: 60px;" alt="Logo"/><br/><br/><br/>
+                    </div>
+                    <div class="text-left">
+                        <t class="font-size:18pt">
+                            <b>ใบเสร็จรับเงิน / ใบกำกับภาษี</b><br/>
+                            <b>RECEIPT / TAX INVOICE</b><br/><br/>
+                        </t>
+                        <div class="row">
+                            <div class="col-5">
+                                <b>เลขที่/No.</b>
+                            </div>
+                            <div class="col-7">
+                                <t t-esc="o.number"/><br/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5">
+                                <b>วันที่/date</b>
+                            </div>
+                            <div class="col-7">
+                                <t t-esc="o.date_document"/><br/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5">
+                                <b>อ้างอิง/Ref No.</b><br/>
+                            </div>
+                            <div class="col-7">
+                                <b>.............</b><br/><br/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <b>เลขประจำตัวผู้เสียภาษี/Tax ID</b>
+                            </div>
+                            <div class="col-4">
+                                <t t-esc="o.customer_vat"/><br/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-7">
+                                <b>สาขาที่/Branch No</b>
+                            </div>
+                            <div class="col-5">
+                                <t t-set="สำนักงานใหญ่" t-value="00000"/> <t t-esc="สำนักงานใหญ่"/>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-        <div t-attf-class="article o_report_layout_standard"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+        <div t-attf-class="article o_report_etax_body"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
             <t t-raw="0"/>
         </div>
 
-        <div t-attf-class="footer o_standard_footer">
+        <div t-attf-class="footer o_report_etax_footer">
             <div class="text-center">
                 <div t-if="report_type == 'pdf'" class="text-muted">
                     <div class="row">
@@ -121,18 +144,21 @@
                             <b>การชําระเงิน/Payment</b><br/>
                             <b>[ ]เงินสด : ชําระวันที่............ ยอด...........บาท</b><br/>
                             <b>ข้อมูลเพิ่มเติม................................................</b>
-                    <!-- Page: <span class="page"/> / <span class="topage"/> -->
                         </div>
                         <div class="col-4 text-center">
-                            <b>อนุมัติโดย/Approved by</b><br/><br/>
+                            <b>ผู้มีอำนาจลงนาม/Approved by</b><br/><br/>
                             <b>.....................................</b><br/>
                             <b>วันที่/Date ......................</b><br/>
                         </div>
                         <div class="col-3 text-center">
-                            <b>รับชําระ/Received by</b><br/><br/>
+                            <b>ผู้รับเงิน/Received by</b><br/><br/>
                             <b>.....................................</b><br/>
                             <b>วันที่/Date .....................</b><br/>
                         </div>
+                    </div><br/><br/>
+                    <div class="text-left">
+                        <t>1. ใบเสร็จรับเงิน/ใบกำกับภาษีนี้จะสมบูรณ์ต่อเมื่อมีลายมือชื่อผู้มีอำนาจและผู้รับเงิน และเช็คผ่านธนาคารเรียบร้อยแล้ว</t><br/>
+                        <t>2. หากมีการแก้ไขขอให้แจ้งภายใน 7 วัน มิฉะนั้นสำนักงาน ฯ จะถือว่าถูกต้อง</t>
                     </div>
                 </div>
             </div>

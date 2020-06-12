@@ -1,33 +1,25 @@
-.receipt_form {
-    .table_data {
+.o_report_etax_header {
+    color: black;
+    font-size: 12pt;
+    font-style: normal;
+    font-family: serif;
+    }
+
+.page {
         thead {
             color: black;
-            border: 1px solid black;
             }
         tbody tr {
-            border: 1px solid black;
-            border-bottom: none;
+            color: black;
             }
         tfoot {
-            border: 1px solid black;
-            // border-bottom: 1px solid black;
+            color: black;
             }
-        }
     }
-.header {
-    .row {
-        color: black;
-        font-size: 12pt;
-        font-style: normal;
-        font-family: serif;
-        }
-    }
-.o_standard_footer {
-    .row {
-        color: black;
-        font-size: 12pt;
-        font-weight: 100;
-        font-family: sans-serif;
 
-        }
+.o_report_etax_footer {
+    color: black;
+    font-size: 12pt;
+    font-weight: 100;
+    font-family: sans-serif;
     }
