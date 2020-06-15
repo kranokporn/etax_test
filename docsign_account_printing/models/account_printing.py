@@ -45,7 +45,7 @@ class AccountPrinting(models.Model):
     customer_name = fields.Char(string="Customer")
     date_document = fields.Datetime()
     operating_unit = fields.Char()
-    currency = fields.Char()
+    currency = fields.Many2one(comodel_name="res.currency")
     system_origin_name = fields.Char(string="System Origin Name")
     system_origin_number = fields.Char(string="System Origin Number")
     origin_id = fields.Many2one(comodel_name="account.printing")

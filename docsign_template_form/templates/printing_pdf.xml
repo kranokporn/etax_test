@@ -182,8 +182,8 @@
                     </tr>
                     <tr class="text-center">
                         <td colspan="5">
-                            Waiting Amount to Text TH<br/>
-                            Waiting Amount to Text EN
+                            (<span t-esc="o.currency.amount_to_text(o.amount_total)"/>)<br/>
+                            (<span t-esc="o.currency.with_context({'lang': 'th_TH'}).amount_to_text(o.amount_total)"/>)
                         </td>
                     </tr>
                 </tfoot>
