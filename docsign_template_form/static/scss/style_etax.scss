@@ -1,0 +1,29 @@
+.table_data {
+    thead {
+        color: black;
+        // border: 1px solid black;
+        }
+    tbody tr {
+        color: black;
+        // border: 1px solid black;
+        // border-bottom: none;
+        }
+    tfoot {
+        color: black;
+        // border: 1px solid black;
+        }
+    }
+
+.o_report_etax_header {
+    // color: black;
+    font-size: 12pt;
+    font-style: normal;
+    font-family: serif;
+    }
+
+.o_report_etax_footer {
+    // color: black;
+    font-size: 12pt;
+    font-weight: 100;
+    font-family: sans-serif;
+    }

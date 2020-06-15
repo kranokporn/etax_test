@@ -1,24 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <template id="report_assets_common" name="eTax Style common assets" inherit_id="web.report_assets_common">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/scss" href="/docsign_template_form/static/scss/style_etax.scss"/>
+        </xpath>
+    </template>
+
     <template id="report_document_pdf">
-        <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="o">
-                <t t-call="docsign_template_form.external_layout_pabi">
-                    <div class="page">
-                        <h2>
-                            <span>DEMO</span>
-                        </h2>
-                    </div>
-                </t>
-            </t>
-        </t>
+        <tr t-call="docsign_template_form.external_layout_pabi">
+            <div class="page">
+                <table class="table table-sm table_data mt8">
+                    <thead>
+                        <tr class="text-center">
+                            <td>ลำดับ</td>
+                            <td>รายการ</td>
+                            <td>จำนวน</td>
+                            <td>ราคา/หน่วย</td>
+                            <td>จำนวนเงิน</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="o.printing_lines" t-as="line">
+                            <!-- <tr class=""> -->
+                                <td>
+                                </td>
+                                <td class="text-left">
+                                    <t t-esc="line.product_name"/>
+                                </td>
+                                <td class="text-center">
+                                    <t t-esc="line.quantity"/>
+                                </td>
+                                <td class="text-right">
+                                    <t t-esc="line.price_unit"/>
+                                </td>
+                                <td class="text-right">
+                                    <t t-esc="line.price_subtotal"/>
+                                </td>
+                            <!-- </tr> -->
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <td class="text-left">
+                            <t>หมายเหตุ/Remarks</t>
+                        </td>
+                        <td class="text-right" colspan="3">
+                            <t>ราคามูลค่าสินค้าหรือบริการ/Sub Total</t><br/>
+                            <t>ภาษีมูลค่าเพิ่ม/VAT X%</t><br/>
+                            <t>จํานวนรวมทั้งสิ้น/Grand Total</t><br/>
+                        </td>
+                        <td class="text-right">
+                            <t t-esc="'{0:,.2f}'.format(o.amount_untaxed)" /><br/>
+                            <t t-esc="'{0:,.2f}'.format(o.amount_tax)"/><br/>
+                            <t t-esc="'{0:,.2f}'.format(o.amount_total)"/>
+                        </td>
+                        <tr class="text-center">
+                            <td colspan="5">จำนวนเงินรวมทั้งสิ้น</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </tr>
     </template>
 
     <template id="report_printing_pdf">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <!-- <t t-set="lang" t-value="o.partner_id.lang"/> -->
                 <t t-call="docsign_template_form.report_document_pdf"/>
+                    <!-- <div class="col-7" style="margin-top:22px;">
+                        <b>สาขาที่</b><br/>
+                        <b>Branch No.</b><br/>
+                    </div> -->
             </t>
         </t>
     </template>

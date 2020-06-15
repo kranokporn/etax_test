@@ -8,6 +8,7 @@
         report_type="qweb-pdf"
         name="docsign_template_form.report_printing_pdf"
         file="docsign_template_form.report_printing_pdf"
+        paperformat="docsign_template_form.paperformat_docsign_template"
     />
 
     <!-- TEXT File -->
