@@ -13,7 +13,7 @@
     "data": [
         "data/paper_format.xml",
         "data/account_reports.xml",
-        "templates/report_templates.xml",
+        "templates/report_template_style_etax.xml",
         "templates/crossindustryinvoice.xml",
         "templates/printing_pdf.xml",
         "templates/printing_text.xml",

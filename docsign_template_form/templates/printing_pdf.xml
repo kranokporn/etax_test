@@ -1,76 +1,236 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <template id="report_assets_common" name="eTax Style common assets" inherit_id="web.report_assets_common">
-        <xpath expr="." position="inside">
-            <link rel="stylesheet" type="text/scss" href="/docsign_template_form/static/scss/style_etax.scss"/>
-        </xpath>
+    <template id="report_document_pdf_header">
+        <div t-attf-class="header o_report_etax_header" t-attf-style="font-family: {{o.company_id.font}}">
+            <!-- Header 1 : Company-->
+            <div class="row">
+                <div class="col-8 mt24">
+                    <h4>
+                        <b>สำนักงานพัฒนาวิทยาศาสตร์และเทคโนโลยีแห่งชาติ</b><br/>
+                        <b>National Science and Technology Development Agency</b>
+                    </h4>
+                    <p>
+                        73/1 ถนนพระรามที่ 6 ทุ่งพญาไท ราชเทวี กรุงเทพฯ 10400<br/>
+                        73/1 Rama VI Rd,. Thungphayathai, Rajdhevee, Bangkok 10400<br/>
+                        Tel. <t t-esc="o.company_id.phone"/> Fax. <t t-esc="o.company_id.partner_id.fax"/>
+                    </p>
+                </div>
+                <div class="col-4 mt16">
+                    <div class="text-right">
+                        <img t-if="o.company_id.logo_web" t-att-src="image_data_uri(o.company_id.logo_web)" style="max-height: 60px;" alt="Logo"/>
+                    </div>
+                    <div class="mt24">
+                        <h3>
+                            <b>ใบเสร็จรับเงิน / ใบกำกับภาษี</b><br/>
+                            <b>RECEIPT / TAX INVOICE</b>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Header 2 : Details -->
+            <div class="row mt8">
+                <!-- left -->
+                <div class="col-8">
+                    <div class="row">
+                        <div class="col-4">
+                            <b>
+                                สาขาที่<br/>
+                                Branch No.
+                            </b>
+                        </div>
+                        <div class="col-8">
+                            <!-- branch -->
+                            <t t-esc="o.taxbranch_code"/>
+                            <t t-esc="o.taxbranch_name"/><br/>
+                            <!-- address -->
+                            <t t-esc="o.seller_street"/>
+                            <t t-esc="o.seller_street2"/>
+                            <t t-esc="o.seller_city"/>
+                            <t t-esc="o.seller_state"/>
+                            <t t-esc="o.seller_zip"/>
+                            โทรศัพท์ <t t-esc="o.seller_phone"/><br/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <b>
+                                เลขประจำตัวผู้เสียภาษี / TAX ID<br/>
+                                รหัสลูกค้า<br/>
+                                ลูกค้า<br/>
+                                Customer
+                            </b>
+                        </div>
+                        <div class="col-8">
+                            <!-- tax id -->
+                            <t t-esc="o.taxbranch_taxid"/><br/>
+                            <!-- customer code -->
+                            <t t-esc="o.taxbranch_taxid"/><br/>
+                            <!-- customer -->
+                            <t t-esc="o.customer_name"/><br/>
+                            <!-- customer address -->
+                            <t t-esc="o.customer_street"/>
+                            <t t-esc="o.customer_street2"/>
+                            <t t-esc="o.customer_city"/>
+                            <t t-esc="o.customer_state"/>
+                            <t t-esc="o.customer_zip"/><br/>
+                        </div>
+                    </div>
+                </div>
+                <!-- right -->
+                <div class="col-4">
+                    <div class="row">
+                        <div class="col-5">
+                            <b>
+                                เลขที่/No.<br/>
+                                วันที่/date<br/>
+                                อ้างอิง/Ref No.<br/><br/>
+                            </b>
+                        </div>
+                        <div class="col-7">
+                            <!-- number -->
+                            <t t-esc="o.number"/><br/>
+                            <!-- date -->
+                            <t t-esc="o.date_document" t-options="{'widget': 'date'}"/><br/>
+                            <!-- reference -->
+                            <t t-esc="o.number"/><br/>
+                            <t t-esc="o.number"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <b>
+                                เลขประจำตัวผู้เสียภาษี<br/>
+                                Tax ID<br/>
+                                สาขาที่/Branch No
+                            </b>
+                        </div>
+                        <div class="col-6">
+                            <!-- customer Tax ID -->
+                            <t t-esc="o.customer_vat"/><br/><br/>
+                            <t t-esc="o.customer_vat"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </template>
 
-    <template id="report_document_pdf">
-        <tr t-call="docsign_template_form.external_layout_pabi">
-            <div class="page">
-                <table class="table table-sm table_data mt8">
-                    <thead>
-                        <tr class="text-center">
-                            <td>ลำดับ</td>
-                            <td>รายการ</td>
-                            <td>จำนวน</td>
-                            <td>ราคา/หน่วย</td>
-                            <td>จำนวนเงิน</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr t-foreach="o.printing_lines" t-as="line">
-                            <!-- <tr class=""> -->
-                                <td>
-                                </td>
-                                <td class="text-left">
-                                    <t t-esc="line.product_name"/>
-                                </td>
-                                <td class="text-center">
-                                    <t t-esc="line.quantity"/>
-                                </td>
-                                <td class="text-right">
-                                    <t t-esc="line.price_unit"/>
-                                </td>
-                                <td class="text-right">
-                                    <t t-esc="line.price_subtotal"/>
-                                </td>
-                            <!-- </tr> -->
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <td class="text-left">
-                            <t>หมายเหตุ/Remarks</t>
+    <template id="report_document_pdf_body">
+        <div t-attf-class="article page o_report_etax_body" t-attf-style="font-family: {{o.company_id.font}}">
+            <table class="table table-sm mt8">
+                <thead>
+                    <tr class="text-center">
+                        <th>ลำดับ<br/>No.</th>
+                        <th>รายการ<br/>Description</th>
+                        <th>จำนวน<br/>Quantity</th>
+                        <th>ราคา/หน่วย<br/>Unit Price</th>
+                        <th>จำนวนเงิน<br/>Amount (THB)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="index" t-value="1"/>
+                    <tr t-foreach="o.printing_lines" t-as="line">
+                        <td class="text-center width5">
+                            <t t-esc="index"/>
                         </td>
-                        <td class="text-right" colspan="3">
-                            <t>ราคามูลค่าสินค้าหรือบริการ/Sub Total</t><br/>
-                            <t>ภาษีมูลค่าเพิ่ม/VAT X%</t><br/>
-                            <t>จํานวนรวมทั้งสิ้น/Grand Total</t><br/>
+                        <td class="width55">
+                            <t t-esc="line.name"/>
+                        </td>
+                        <td class="text-center width10">
+                            <t t-esc="'{0:,.2f}'.format(line.quantity)" />
+                        </td>
+                        <td class="text-right width15">
+                            <t t-esc="'{0:,.2f}'.format(line.price_unit)" />
+                        </td>
+                        <td class="text-right width15">
+                            <t t-esc="'{0:,.2f}'.format(line.price_subtotal)" />
+                        </td>
+                        <t t-set="index" t-value="index+1"/>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2" rowspan="3">
+                            หมายเหตุ/Remarks
+                            <t t-if="o.notes">
+                                : <t t-esc="o.notes"/>
+                            </t>
+                        </td>
+                        <td class="text-right" colspan="2">
+                            ราคามูลค่าสินค้าหรือบริการ/Sub Total
                         </td>
                         <td class="text-right">
-                            <t t-esc="'{0:,.2f}'.format(o.amount_untaxed)" /><br/>
-                            <t t-esc="'{0:,.2f}'.format(o.amount_tax)"/><br/>
+                            <t t-esc="'{0:,.2f}'.format(o.amount_untaxed)" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right" colspan="2">
+                            ภาษีมูลค่าเพิ่ม/VAT 7%
+                        </td>
+                        <td class="text-right">
+                            <t t-esc="'{0:,.2f}'.format(o.amount_tax)"/>
+                        </td>
+                    </tr>
+                    <tr class="text-right total">
+                        <td colspan="2">
+                            จํานวนรวมทั้งสิ้น/Grand Total
+                        </td>
+                        <td>
                             <t t-esc="'{0:,.2f}'.format(o.amount_total)"/>
                         </td>
-                        <tr class="text-center">
-                            <td colspan="5">จำนวนเงินรวมทั้งสิ้น</td>
-                        </tr>
-                    </tfoot>
-                </table>
+                    </tr>
+                    <tr class="text-center">
+                        <td colspan="5">
+                            Waiting Amount to Text TH<br/>
+                            Waiting Amount to Text EN
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </template>
+
+    <template id="report_document_pdf_footer">
+        <div t-attf-class="footer o_report_etax_footer" t-attf-style="font-family: {{o.company_id.font}}">
+            <div class="row">
+                <div class="col-4">
+                    <p>
+                        การชําระเงิน/Payment<br/>
+                        [ ] เงินสด : ชําระวันที่ <t t-esc="o.date_document" t-options="{'widget': 'date'}"/> ยอด <t t-esc="'{0:,.2f}'.format(o.amount_total)"/> บาท<br/>
+                        ข้อมูลเพิ่มเติม...............................................................
+                    </p>
+                </div>
+                <div class="col-4 text-center">
+                    <p>
+                        ผู้มีอำนาจลงนาม/Approved by<br/><br/>
+                        ...........................................................<br/>
+                        ..........................................
+                    </p>
+                </div>
+                <div class="col-4 text-center">
+                    <p>
+                        ผู้รับเงิน/Received by<br/><br/>
+                        ...........................................................<br/>
+                        ..........................................
+                    </p>
+                </div>
             </div>
-        </tr>
+            <div class="mt16">
+                <p>
+                    1. ใบเสร็จรับเงิน/ใบกำกับภาษีนี้จะสมบูรณ์ต่อเมื่อมีลายมือชื่อผู้มีอำนาจและผู้รับเงิน และเช็คผ่านธนาคารเรียบร้อยแล้ว<br/>
+                    2. หากมีการแก้ไขขอให้แจ้งภายใน 7 วัน มิฉะนั้นสำนักงาน ฯ จะถือว่าถูกต้อง
+                </p>
+            </div>
+        </div>
     </template>
 
     <template id="report_printing_pdf">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-call="docsign_template_form.report_document_pdf"/>
-                    <!-- <div class="col-7" style="margin-top:22px;">
-                        <b>สาขาที่</b><br/>
-                        <b>Branch No.</b><br/>
-                    </div> -->
+                <t t-call="docsign_template_form.report_document_pdf_header"/>
+                <t t-call="docsign_template_form.report_document_pdf_body"/>
+                <t t-call="docsign_template_form.report_document_pdf_footer"/>
             </t>
         </t>
     </template>
