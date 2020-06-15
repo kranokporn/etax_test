@@ -1,29 +1,58 @@
-.table_data {
-    thead {
-        color: black;
-        // border: 1px solid black;
-        }
-    tbody tr {
-        color: black;
-        // border: 1px solid black;
-        // border-bottom: none;
-        }
-    tfoot {
-        color: black;
-        // border: 1px solid black;
-        }
+.o_report_etax_header {
+    font-size: 18px;
     }
 
-.o_report_etax_header {
-    // color: black;
-    font-size: 12pt;
-    font-style: normal;
-    font-family: serif;
+.o_report_etax_body {
+    font-size: 18px;
+    td.width5 {
+        width: 5%;
+    }
+    td.width10 {
+        width: 10%;
+    }
+    td.width15 {
+        width: 15%;
+    }
+    td.width55 {
+        width: 55%;
+    }
+    table {
+        &.o_main_table {
+            margin-bottom: 0;
+        }
+
+        thead {
+            color: $o-company-secondary-color;
+            tr th {
+                border-top: 1px solid $o-company-secondary-color !important;
+                border-bottom: 1px solid $o-company-secondary-color;
+                text-transform: uppercase;
+            }
+        }
+        tbody {
+            color: #000;
+            tr:last-child td {
+                border-bottom: 1px solid $o-company-secondary-color;
+            }
+            tr {
+                td {
+                    padding: 10px 5px;
+                }
+            }
+        }
+        tfoot {
+            color: #000;
+            tr:last-child td {
+                border-top: 1px solid $o-company-secondary-color;
+                border-bottom: 1px solid $o-company-secondary-color;
+            }
+            tr.total td{
+                border-top: 1px solid $o-company-secondary-color;
+            }
+        }
+    }
     }
 
 .o_report_etax_footer {
-    // color: black;
-    font-size: 12pt;
-    font-weight: 100;
-    font-family: sans-serif;
+    font-size: 18px;
     }

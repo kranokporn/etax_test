@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_assets_common" name="eTax Style common assets" inherit_id="web.report_assets_common">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/scss" href="/docsign_template_form/static/scss/style_etax.scss"/>
+        </xpath>
+    </template>
+</odoo>
